@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.javiviz.sh01_aplicaciondeutileria.main.presentation.MainScreen
 import com.javiviz.sh01_aplicaciondeutileria.ui.theme.SH01_AplicacionDeUtileriaTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SH01_AplicacionDeUtileriaTheme {
-
+                MainScreen()
             }
         }
     }

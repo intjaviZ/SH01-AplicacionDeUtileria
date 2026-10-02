@@ -1,0 +1,111 @@
+package com.javiviz.sh01_aplicaciondeutileria.main.presentation
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.javiviz.sh01_aplicaciondeutileria.dilutedSulfateCalculator.presentation.DilutedSulfateCalculatorScreen
+import com.javiviz.sh01_aplicaciondeutileria.main.viewModel.MainViewModel
+import com.javiviz.sh01_aplicaciondeutileria.main.viewModel.Sections
+import com.javiviz.sh01_aplicaciondeutileria.polymerCalculator.presentation.PolymerCalculatorScreen
+import com.javiviz.sh01_aplicaciondeutileria.pureSulfateCalculator.presentation.PureSulfateCalculatorScreen
+import com.javiviz.sh01_aplicaciondeutileria.waterIntakeCalculator.presentation.WaterIntakeCalculatorScreen
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(viewModel : MainViewModel = viewModel()) {
+    val currentSection by viewModel.currentSection.collectAsStateWithLifecycle()
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet() {
+                Text(
+                    text = "Calculadora de dosificación",
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                HorizontalDivider()
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Sections.entries.forEach { section ->
+                    NavigationDrawerItem(
+                        label = { Text(section.label) },
+                        selected = currentSection == section,
+                        onClick = {
+                            viewModel.onSectionSelected(section)
+
+                            coroutineScope.launch {
+                                drawerState.close()
+                            }
+                        },
+                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                    )
+                }
+            }
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(currentSection.label) },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            coroutineScope.launch { drawerState.open() }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Abrir menú"
+                            )
+                        }
+                    }
+                )
+            }
+        ) { paddingValues ->
+            Column( modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+                when(currentSection) {
+                    Sections.WATER_INTAKE -> WaterIntakeCalculatorScreen()
+                    Sections.PURE_SULFATE -> PureSulfateCalculatorScreen()
+                    Sections.DILUTED_SULFATE -> DilutedSulfateCalculatorScreen()
+                    Sections.POLYMER -> PolymerCalculatorScreen()
+                }
+            }
+
+        }
+    }
+
+}
