@@ -15,11 +15,9 @@ class WaterIntakeCalculatorViewModel : ViewModel() {
     val waterIntake : StateFlow<Double> = _waterIntake.asStateFlow()
 
     fun setLiterPerSecond(newValue : String) {
-
         _literPerSecond.value = newValue
     }
     fun setMinutesOfWork(newValue : String) {
-
         _minutesOfWork.value = newValue
     }
 
