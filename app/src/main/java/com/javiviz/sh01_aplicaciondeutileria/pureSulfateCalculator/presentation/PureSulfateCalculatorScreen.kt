@@ -23,30 +23,24 @@ fun PureSulfateCalculatorScreen(viewModel : PureSulfateCalculatorViewModel = vie
     val turbidity by viewModel.turbidity.collectAsStateWithLifecycle()
     val pureSulfate by viewModel.pureSulfate.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    ResultCard(pureSulfate,"Cantidad del sulfato puro a dosificar ml/min")
+
+    CustomTextField(
+        value = waterIntake,
+        onValueChanged = { viewModel.setWaterIntake(it) },
+        label = "Gasto promedio de agua"
+    )
+
+    CustomTextField(
+        value = turbidity,
+        onValueChanged = { viewModel.setTurbidity(it) },
+        label = "Turbiedad del agua"
+    )
+
+    Button(
+        modifier = Modifier.padding(32.dp).fillMaxWidth(),
+        onClick = {viewModel.calculatePureSulfate()}
     ) {
-        ResultCard(pureSulfate,"Cantidad del sulfato puro a dosificar ml/min")
-
-        CustomTextField(
-            value = waterIntake,
-            onValueChanged = { viewModel.setWaterIntake(it) },
-            label = "Gasto promedio de agua"
-        )
-
-        CustomTextField(
-            value = turbidity,
-            onValueChanged = { viewModel.setTurbidity(it) },
-            label = "Turbiedad del agua"
-        )
-
-        Button(
-            modifier = Modifier.padding(32.dp).fillMaxWidth(),
-            onClick = {viewModel.calculatePureSulfate()}
-        ) {
-            Text("Calcular")
-        }
+        Text("Calcular")
     }
 }

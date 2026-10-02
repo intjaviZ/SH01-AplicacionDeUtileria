@@ -24,36 +24,30 @@ fun DilutedSulfateCalculatorScreen(viewModel : DilutedSulfateCalculatorViewModel
     val concentration by viewModel.concentration.collectAsStateWithLifecycle()
     val dilutedSulfate by viewModel.dilutedSulfate.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    ResultCard(dilutedSulfate,"Cantidad del sulfato diluido a dosificar")
+
+    CustomTextField(
+        value = waterIntake,
+        onValueChanged = { viewModel.setWaterIntake(it) },
+        label = "Gasto promedio de agua"
+    )
+
+    CustomTextField(
+        value = turbidity,
+        onValueChanged = { viewModel.setTurbidity(it) },
+        label = "Turbiedad del agua"
+    )
+
+    CustomTextField(
+        value = concentration,
+        onValueChanged = { viewModel.setConcentration(it) },
+        label = "nivel de concentración del sulfato"
+    )
+
+    Button(
+        modifier = Modifier.padding(32.dp).fillMaxWidth(),
+        onClick = {viewModel.calculateDilutedSulfate()}
     ) {
-        ResultCard(dilutedSulfate,"Cantidad del sulfato diluido a dosificar")
-
-        CustomTextField(
-            value = waterIntake,
-            onValueChanged = { viewModel.setWaterIntake(it) },
-            label = "Gasto promedio de agua"
-        )
-
-        CustomTextField(
-            value = turbidity,
-            onValueChanged = { viewModel.setTurbidity(it) },
-            label = "Turbiedad del agua"
-        )
-
-        CustomTextField(
-            value = concentration,
-            onValueChanged = { viewModel.setConcentration(it) },
-            label = "nivel de concentración del sulfato"
-        )
-
-        Button(
-            modifier = Modifier.padding(32.dp).fillMaxWidth(),
-            onClick = {viewModel.calculateDilutedSulfate()}
-        ) {
-            Text("Calcular")
-        }
+        Text("Calcular")
     }
 }

@@ -25,31 +25,25 @@ fun WaterIntakeCalculatorScreen(viewModel : WaterIntakeCalculatorViewModel = vie
     val minutesOfWork by viewModel.minutesOfWork.collectAsStateWithLifecycle()
     val waterIntake by viewModel.waterIntake.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+    ResultCard(waterIntake,"Resultado en litros por segundo")
+
+    CustomTextField(
+        value = literPerSecond,
+        onValueChanged = { viewModel.setLiterPerSecond(it) },
+        label = "Litros por segundo"
+    )
+
+    CustomTextField(
+        value = minutesOfWork,
+        onValueChanged = { viewModel.setMinutesOfWork(it) },
+        label = "Minutos de trabajo"
+    )
+
+
+    Button(
+        modifier = Modifier.padding(32.dp).fillMaxWidth(),
+        onClick = {viewModel.calculateWaterIntake()}
     ) {
-        ResultCard(waterIntake,"Resultado en litros por segundo")
-
-        CustomTextField(
-            value = literPerSecond,
-            onValueChanged = { viewModel.setLiterPerSecond(it) },
-            label = "Litros por segundo"
-        )
-
-        CustomTextField(
-            value = minutesOfWork,
-            onValueChanged = { viewModel.setMinutesOfWork(it) },
-            label = "Minutos de trabajo"
-        )
-
-
-        Button(
-            modifier = Modifier.padding(32.dp).fillMaxWidth(),
-            onClick = {viewModel.calculateWaterIntake()}
-        ) {
-            Text("Calcular")
-        }
+        Text("Calcular")
     }
 }
