@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,13 +16,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ResultCard(value : Double, info : String) {
-    Card(
+    ElevatedCard(
         modifier = Modifier.padding(32.dp).fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inversePrimary),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(Modifier.padding(32.dp)) {
-            Text("${value}", style = MaterialTheme.typography.displayMedium)
+            Text("%.2f".format(value), style = MaterialTheme.typography.displayMedium)
             Text(info)
         }
 
