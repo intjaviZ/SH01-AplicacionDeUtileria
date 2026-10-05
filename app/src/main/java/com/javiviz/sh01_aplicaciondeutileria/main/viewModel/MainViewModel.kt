@@ -7,8 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MainViewModel : ViewModel() {
     private var _currentSection = MutableStateFlow(Sections.WATER_INTAKE)
+    private val _isDarkTheme = MutableStateFlow(true)
     val currentSection : StateFlow<Sections> = _currentSection.asStateFlow()
+    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme.asStateFlow()
 
+    fun setDarkTheme(enabled: Boolean) {
+        _isDarkTheme.value = enabled
+    }
     fun onSectionSelected(section: Sections) {
         _currentSection.value = section
     }

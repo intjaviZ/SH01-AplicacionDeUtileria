@@ -38,6 +38,10 @@ class PolymerCalculatorViewModel : ViewModel() {
         val factor = _factor.value.toDoubleOrNull() ?: 0.0
         val litros = _liters.value.toDoubleOrNull() ?: 0.0
 
-        _polymer.value = (gasto * turbiedad * factor * 2.852) / litros
+        _polymer.value = if (litros != 0.0) {
+            (gasto * turbiedad * factor * 2.852) / litros
+        } else {
+            0.0
+        }
     }
 }

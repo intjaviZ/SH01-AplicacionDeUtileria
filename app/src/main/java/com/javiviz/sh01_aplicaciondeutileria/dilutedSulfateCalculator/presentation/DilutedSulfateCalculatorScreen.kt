@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +42,8 @@ fun DilutedSulfateCalculatorScreen(viewModel : DilutedSulfateCalculatorViewModel
     CustomTextField(
         value = concentration,
         onValueChanged = { viewModel.setConcentration(it) },
-        label = "nivel de concentración del sulfato"
+        label = "nivel de concentración del sulfato",
+        nextAction = ImeAction.Go
     )
 
     Button(

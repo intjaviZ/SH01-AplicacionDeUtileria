@@ -1,9 +1,13 @@
 package com.javiviz.sh01_aplicaciondeutileria.main.presentation
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +24,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
@@ -28,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,7 +49,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(viewModel : MainViewModel = viewModel()) {
     val currentSection by viewModel.currentSection.collectAsStateWithLifecycle()
+    val isDark by viewModel.isDarkTheme.collectAsStateWithLifecycle()
 
+    val scrollState = rememberScrollState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
@@ -70,6 +78,22 @@ fun MainScreen(viewModel : MainViewModel = viewModel()) {
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
                 }
+
+                Spacer(modifier = Modifier.weight(1f))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Modo oscuro", style = MaterialTheme.typography.bodyLarge)
+
+                    Switch(
+                        checked = isDark,
+                        onCheckedChange = { viewModel.setDarkTheme(it) }
+                    )
+                }
             }
         }
     ) {
@@ -90,11 +114,15 @@ fun MainScreen(viewModel : MainViewModel = viewModel()) {
                 )
             }
         ) { paddingValues ->
-            Column( modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .imePadding()
+                    .verticalScroll(scrollState),
+
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 when(currentSection) {
                     Sections.WATER_INTAKE -> WaterIntakeCalculatorScreen()

@@ -32,7 +32,7 @@ class DilutedSulfateCalculatorViewModel : ViewModel() {
         val concentrado = _concentration.value.toDoubleOrNull() ?: 0.0
         val factorTurbiedad = calculateFactor(turbiedad)
         _dilutedSulfate.value = if (concentrado != 0.0) {
-            (gasto*turbiedad*factorTurbiedad)/((concentrado/1000) * 5)
+            (gasto*turbiedad*factorTurbiedad)/((concentrado) * 5)
         } else {
             0.0
         }
