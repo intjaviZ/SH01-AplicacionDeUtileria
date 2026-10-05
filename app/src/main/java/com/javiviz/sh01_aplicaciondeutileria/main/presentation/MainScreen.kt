@@ -1,5 +1,6 @@
 package com.javiviz.sh01_aplicaciondeutileria.main.presentation
 
+import android.widget.Button
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -42,6 +44,7 @@ import com.javiviz.sh01_aplicaciondeutileria.main.viewModel.MainViewModel
 import com.javiviz.sh01_aplicaciondeutileria.main.viewModel.Sections
 import com.javiviz.sh01_aplicaciondeutileria.polymerCalculator.presentation.PolymerCalculatorScreen
 import com.javiviz.sh01_aplicaciondeutileria.pureSulfateCalculator.presentation.PureSulfateCalculatorScreen
+import com.javiviz.sh01_aplicaciondeutileria.ui.components.Profile
 import com.javiviz.sh01_aplicaciondeutileria.waterIntakeCalculator.presentation.WaterIntakeCalculatorScreen
 import kotlinx.coroutines.launch
 
@@ -50,6 +53,8 @@ import kotlinx.coroutines.launch
 fun MainScreen(viewModel : MainViewModel = viewModel()) {
     val currentSection by viewModel.currentSection.collectAsStateWithLifecycle()
     val isDark by viewModel.isDarkTheme.collectAsStateWithLifecycle()
+    val nombre by viewModel.nombre.collectAsStateWithLifecycle()
+    val matricula by viewModel.matricula.collectAsStateWithLifecycle()
 
     val scrollState = rememberScrollState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -130,6 +135,12 @@ fun MainScreen(viewModel : MainViewModel = viewModel()) {
                     Sections.DILUTED_SULFATE -> DilutedSulfateCalculatorScreen()
                     Sections.POLYMER -> PolymerCalculatorScreen()
                 }
+
+                ElevatedButton(onClick = { viewModel.setProfile() }) {
+                    Text("Actualizar perfil")
+                }
+                Profile(nombre = nombre, matricula = matricula)
+
             }
 
         }
